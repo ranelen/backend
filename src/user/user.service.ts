@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service'; // Adjust the path if necessary
+import { PrismaService } from '../prisma/prisma.service';
 import { User, Prisma } from '@prisma/client';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
+  // Fetch a single user by unique input
   async user(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput,
   ): Promise<User | null> {
@@ -13,7 +14,8 @@ export class UserService {
       where: userWhereUniqueInput,
     });
   }
- 
+
+  // Fetch multiple users with various parameters
   async users(params: {
     skip?: number;
     take?: number;
@@ -31,12 +33,14 @@ export class UserService {
     });
   }
 
+  // Create a new user
   async createUser(data: Prisma.UserCreateInput): Promise<User> {
     return this.prisma.user.create({
       data,
     });
   }
 
+  // Update an existing user
   async updateUser(params: {
     where: Prisma.UserWhereUniqueInput;
     data: Prisma.UserUpdateInput;
@@ -48,6 +52,7 @@ export class UserService {
     });
   }
 
+  // Delete a user by unique input
   async deleteUser(where: Prisma.UserWhereUniqueInput): Promise<User> {
     return this.prisma.user.delete({
       where,
